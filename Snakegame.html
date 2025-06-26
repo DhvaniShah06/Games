@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SnakeGame</title>
+    <style>
+        #myImg {
+            position: absolute;
+            top: 100px;
+            left: 0px;
+        }
+
+        #life1 {
+            height: 30px;
+        }
+
+        #life2 {
+            height: 30px;
+        }
+
+        #life3 {
+            height: 30px;
+        }
+
+        #khavanulidhu {
+            position: absolute;
+            top: 100px;
+            height: 35px;
+            left: 400px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Current Life : <img src="./LIFE.jpg" id="life3"> <img src="./LIFE.jpg" id="life2"> <img src="./LIFE.jpg"
+            id="life1"><span id="scoreChange"> Score : 0 </span></h1>
+    <img src="./snakeR.png" id="myImg">
+    <button onclick="startLeft()">&larr;</button>
+    <button onclick="startRight()">&rArr;</button>
+    <button onclick="startTop()">Top</button>
+    <button onclick="startBottom()">Bottom</button>
+    <img src='Apple.jpg' id="khavanulidhu">
+    <audio id="musicEat" src = "EatSound.mp3"></audio>
+    <script type="text/javascript">
+        currentX = 0;
+        currentY = 100;
+        currentLife = 3;
+        intRef = 0;
+        currentScore = 0;
+        function checkLimit() {
+
+            if (currentX > screen.availWidth - 85 || currentX < 0 || currentY > screen.availHeight - 85 || currentY < 0) {
+                currentLife--;
+                lifeImg = document.getElementById(`life${currentLife + 1}`);
+                if (lifeImg) {
+                    lifeImg.src = "LIFE_LOST.jpg";
+                }
+                currentX = screen.availWidth / 2;
+                currentY = screen.availHeight / 2;
+            }
+            if (currentLife < 0) {
+
+                document.body.innerHTML = "<img src = 'lost.jpg'><br/><h1>Your Score is: " + currentScore + "</h1>";
+            }
+        }
+        function startRight() {
+            clearInterval(intRef);
+            intRef = setInterval(moveRight, 5);
+        }
+        function moveRight() {
+            currentX++;
+            imgRef = document.getElementById("myImg");
+            imgRef.src = "snakeR.png";
+            imgRef.style.left = currentX + "px";
+            checkLimit();
+            checkEat();
+
+        }
+
+        function startLeft() {
+            clearInterval(intRef);
+            intRef = setInterval(moveLeft, 5);
+        }
+        function moveLeft() {
+            currentX--;
+            imgRef = document.getElementById("myImg");
+            imgRef.src = "snakeL.png";
+            imgRef.style.left = currentX + "px";
+            checkLimit();
+            checkEat();
+        }
+
+        function startTop() {
+            clearInterval(intRef);
+            intRef = setInterval(moveTop, 5);
+        }
+        function moveTop() {
+            currentY--;
+            imgRef = document.getElementById("myImg");
+            imgRef.src = "snakeT.png";
+            imgRef.style.top = currentY + "px";
+            checkLimit();
+            checkEat();
+        }
+
+        function startBottom() {
+            clearInterval(intRef);
+            intRef = setInterval(moveBottom, 5);
+        }
+        function moveBottom() {
+            currentY++;
+            imgRef = document.getElementById("myImg");
+            imgRef.src = "snakeB.png";
+            imgRef.style.top = currentY + "px";
+            checkLimit();
+            checkEat();
+        }
+        function khavanu() {
+            rany = Math.floor(Math.random() * (screen.availHeight - 100));
+            ranx = Math.floor(Math.random() * (screen.availWidth - 100));
+            a = document.getElementById("khavanulidhu");
+            a.style.top = rany + "px";
+            a.style.left = ranx + "px";
+
+        }
+        function checkEat() {
+            apple = document.getElementById("khavanulidhu");
+            appleX = apple.offsetLeft;
+             appleY = apple.offsetTop;
+
+                if (Math.abs(currentX - appleX) < 100 && Math.abs(currentY - appleY) < 100){
+                currentScore++;
+                    musicEat.play();
+                document.getElementById("scoreChange").innerHTML = "Score : " + currentScore;
+                khavanu();
+            }
+            
+        }
+
+    </script>
+</body>
+
+</html>
